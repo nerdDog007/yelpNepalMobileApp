@@ -10,9 +10,9 @@ export default function Navbar() {
   const {currentIndex} = useSelector((state:any)=>state.info)
 
   return (
-    <View style={{...styles.topContainer,marginBottom:insets.bottom}}>
+    <View style={{...styles.topContainer,bottom:insets.bottom}}>
     <View style={styles.container}>
-      <Navitem Icon={<MaterialIcons name="home" size={30} color={currentIndex==='Home'?"red":"white"} />} text={'Home'} />
+      <Navitem Icon={<MaterialIcons name="search" size={30} color={currentIndex==='Search'?"red":"white"} />} text={'Search'} />
       <Navitem Icon={<AntDesign name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
       <Navitem Icon={<MaterialIcons name="person" size={30} color={currentIndex==='Profile'?"red":"white"} />} text={'Profile'} />
       <Navitem Icon={<MaterialIcons name="bookmark" size={30} color={currentIndex==='Collections'?"red":"white"} />} text={'Collections'} />
@@ -32,7 +32,6 @@ function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
     >
       {Icon}
       <Text style={{fontSize: 10,color: currentIndex===text?"red":"white"}}
-      // onPress={()=>{dispatch(setCurrentIndex(text))}}
       >{text}</Text>
     </Pressable>
   )
@@ -40,7 +39,7 @@ function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
 const styles = StyleSheet.create({
   container: {           
     width: '100%',
-    height: height * 0.1,
+    height: height *.1,
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     position: 'absolute',
-    bottom: 0,
+    // bottom: 0,
     height: 60,
     width: '100%',
     justifyContent: 'center',
