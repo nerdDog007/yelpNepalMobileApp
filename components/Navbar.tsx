@@ -1,5 +1,5 @@
 import { setCurrentIndex } from '@/redux/slices/Info';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,15 +13,14 @@ export default function Navbar() {
     <View style={{...styles.topContainer,bottom:insets.bottom}}>
     <View style={styles.container}>
       <Navitem Icon={<MaterialIcons name="search" size={30} color={currentIndex==='Search'?"red":"white"} />} text={'Search'} />
-      <Navitem Icon={<AntDesign name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
+      <Navitem Icon={<Octicons name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
       <Navitem Icon={<MaterialIcons name="person" size={30} color={currentIndex==='Profile'?"red":"white"} />} text={'Profile'} />
       <Navitem Icon={<MaterialIcons name="bookmark" size={30} color={currentIndex==='Collections'?"red":"white"} />} text={'Collections'} />
-      <Navitem Icon={<MaterialIcons name="more" size={30} color={currentIndex==='More'?"red":"white"} />} text={'More'} />
+      <Navitem Icon={<EvilIcons name="navicon" size={30} color={currentIndex==='More'?"red":"white"} />} text={'More'} />
     </View>
     </View>
   );
 }
-
 function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
 {
   const dispatch = useDispatch()
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
   topContainer: {
     position: 'absolute',
     // bottom: 0,
-    height: 60,
+    // height: 60,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',

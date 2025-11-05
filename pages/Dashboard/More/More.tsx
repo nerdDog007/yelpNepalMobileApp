@@ -1,4 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Dimensions, Image, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
@@ -11,26 +11,57 @@ export default function More() {
   return (
     <ScrollView
       style={{
-        flex: 0,
-        backgroundColor: "white",
+        flex: 1,
+        backgroundColor: "black",
         height: Dimensions.get("window").height,
-        marginTop: insets.top,
-        marginBottom: insets.bottom,
-        padding:'20'
+        // marginBottom,
+        // paddingHorizontal:'20'
       }}>
         <View style={{
-        borderBottomWidth: 1,
-        borderColor: 'red',
         paddingBottom:5,
+        width:Dimensions.get('window').width,
+        paddingHorizontal:'20',
+        backgroundColor:'white',
+        paddingTop: insets.top+10,
+        elevation:10,
         }}>  
           <Text style={{fontSize:24,fontWeight:'500',shadowColor: '#000',}}>
             More
           </Text>
         </View>
-        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',
+        }}>
           <Image source={require('../../../assets/images/ch.jpeg')} style={{justifyContent:'center',alignItems:'center',width:'100%',height:150,resizeMode:'contain',marginTop:5,marginBottom:10}} />
         </View>
-        <Item icon={<MaterialIcons name="reviews" size={24} color="black" />} text={'Add Reviews'} />
+        <View style={{flexDirection:'column',padding:10,gap:20,backgroundColor:'white',
+          paddingHorizontal:'20',elevation:10,
+        }}>
+        <Item icon={<MaterialIcons name="reviews" size={22} color="black" />} text={'Add Reviews'} />
+        <Item icon={<MaterialIcons name="camera-alt" size={22} color="black" />} text={'Add a photo or video'} />
+        <Item icon={<MaterialIcons name="check-circle-outline" size={22} color="black" />} text={'Check In'} />
+        <Item icon={<MaterialIcons name="message" size={22} color="black" />} text={'Messages'} />
+        <Item icon={<MaterialIcons name="circle-notifications" size={22} color="black" />} text={'Notifications'} />
+        <Item icon={<Feather name='activity'size={22} color="black" />}text='Activity Feed' /> 
+        </View>
+
+        <View style={{flexDirection:'column',padding:10,gap:20,backgroundColor:'white',
+          paddingHorizontal:'20',elevation:10,marginTop:10,
+        }}>
+          <Text style={{fontSize:18,fontWeight:'500',shadowColor: '#000',}}>
+            NepaliYelp for Business
+          </Text>
+          <Item icon={<MaterialIcons name="business-center" size={22} color="black" />} text={'Add a Business'} />
+          <Item icon={<MaterialIcons name="explore" size={22} color="black" />} text={'Explore for Business'} />
+        </View>
+        <View style={{flexDirection:'column',padding:10,gap:20,backgroundColor:'white',
+          paddingHorizontal:'20',elevation:10,marginTop:10,
+        }}>
+          <Text style={{fontSize:18,fontWeight:'500',shadowColor: '#000',}}>
+            Settings and Support
+          </Text>
+          <Item icon={<MaterialIcons name="settings" size={22} color="black" />} text={'Settings'} />
+          <Item icon={<MaterialIcons name="help" size={22} color="black" />} text={'Support Center'} />
+        </View>
     </ScrollView>
   );
 }
