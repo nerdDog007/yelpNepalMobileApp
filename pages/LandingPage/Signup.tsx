@@ -1,15 +1,15 @@
-import { setUser } from "@/redux/slices/Info";
-import { setHasAccount } from "@/redux/slices/logSlice";
+import { setToken, setUser } from "@/redux/slices/Info";
+import { setHasAccount, setLogPassword } from "@/redux/slices/logSlice";
 import { nextStep, prevStep, setEmail, setFullName, setPassword } from "@/redux/slices/SignUp";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { Animated, Dimensions, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "expo-router";
+import storage, { storeUserData } from "@/utils/storage";
 
 const { width, height } = Dimensions.get("window");
-
 
 
 export default function Signup() {
@@ -23,7 +23,7 @@ export default function Signup() {
 }
 function Welcome()
 {
-  const {hasAccount} = useSelector((state: any) => state.auth);
+  const {hasAccount,password} = useSelector((state: any) => state.auth);
   const {email} = useSelector((state: any) => state.signup);
   const dispatch = useDispatch();
   const [checked, setChecked] = React.useState(false);
@@ -31,6 +31,8 @@ function Welcome()
   const [errorMsg,setErrorMsg]= React.useState("")
   const errorOpacity = React.useRef(new Animated.Value(0)).current;
   const errorTranslateY = React.useRef(new Animated.Value(10)).current;
+  const router = useRouter();
+
   async function checkUser(){
     const res = await fetch("http://192.168.1.146:3000/api/users", {
       method: "POST",
@@ -165,7 +167,7 @@ function Welcome()
             value={email}
             onChangeText={(text)=>dispatch(setEmail(text)) }
           />}
-          {hasAccount&&<TextInput placeholder="Password" style={{
+          {hasAccount&&<TextInput value={password} placeholder="Password" style={{
               width: "100%",
               height: 50,
               borderColor: "gray",
@@ -174,7 +176,11 @@ function Welcome()
               paddingHorizontal: 10,
               marginBottom: keyboardHeight,
               marginTop:10
-            }}/>}
+            }}
+            onChangeText={(text)=>dispatch(setLogPassword(text))}
+            />
+
+            }
           <Text style={{ fontSize: 12, color: "gray", marginBottom: 20 }}>
             We will never share your information with anyone else.
           </Text>
@@ -186,7 +192,34 @@ function Welcome()
               borderRadius: 8,
               alignItems: "center",
             }}
-            onPress={()=>{
+            onPress={async ()=>{
+              if (password.length>0) {
+                try {
+                  const res = await fetch("http://192.168.1.146:3000/api/login", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      email:email,
+                      password:password
+                    }),
+                  });
+            
+                  const data = await res.json();
+            
+                  if (data.success) {
+                    dispatch(setUser(data));
+                    dispatch(setToken(data.token))
+                    router.replace("/(tabs)/Dashboard");
+                    await storeUserData(data,data.token)
+                  } else {
+                    setErrorMsg("Invalid Password");
+                  }
+                } catch (err) {
+                  console.error(err);
+                }
+              }
               if (checked) {
                 checkUser()
                 setErrorMsg("")
@@ -249,31 +282,52 @@ function Name(){
       value={password}
       onChangeText={(text)=>dispatch(setPassword(text))}
       />
-      <Text style={{textAlign:'center',backgroundColor:"red",padding:10,color:'white',fontWeight:'bold'}}
-      onPress={async ()=>{
-        const res = await fetch("http://192.168.1.146:3000/api/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: email,
-            fullName: fullName,
-            password: password,
-            coord: coord
-          })
-        }).then(res=>res.json())
-        .then(data=>{
-          if (data.success) {
-            dispatch(setUser({...data}))
-            console.log(user) 
-            console.log("suc")
-            // router.replace("/(tabs)/Dashboard")
-          }
-        })
-      }}
-      >Continue</Text>
+      <TouchableOpacity>
+      <Text
+  style={{
+    textAlign: "center",
+    backgroundColor: "red",
+    padding: 10,
+    color: "white",
+    fontWeight: "bold",
+  }}
+  onPress={async () => {
+    try {
+      const res = await fetch("http://192.168.1.146:3000/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          fullName,
+          password,
+          coord,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        dispatch(setUser(data));
+        dispatch(setToken(data.token))
+        await storeUserData(data,data.token)
+        router.replace("/(tabs)/Dashboard");
+        
+      } else {
+        console.log("Signup failed:", data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }}
+>
+  Continue
+</Text>
+
+            </TouchableOpacity>
     </View>
   </View>
  )
 }
+

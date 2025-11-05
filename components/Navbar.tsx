@@ -1,18 +1,22 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { setCurrentIndex } from '@/redux/slices/Info';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from 'react-redux';
 const { height } = Dimensions.get('window');
-
 export default function Navbar() {
-  
+  const insets = useSafeAreaInsets();
+  const {currentIndex} = useSelector((state:any)=>state.info)
+
   return (
-    <View style={styles.topContainer}>
+    <View style={{...styles.topContainer,marginBottom:insets.bottom}}>
     <View style={styles.container}>
-      <Navitem Icon={<MaterialIcons name="home" size={30} color="white" />} text={'Home'} />
-      <Navitem Icon={<MaterialIcons name="search" size={30} color="white" />} text={'Search'} />
-      <Navitem Icon={<MaterialIcons name="add" size={30} color="white" />} text={'Post'} />
-      <Navitem Icon={<MaterialIcons name="notifications" size={30} color="white" />} text={'Notifications'} />
-      <Navitem Icon={<MaterialIcons name="person" size={30} color="white" />} text={'Profile'} />
+      <Navitem Icon={<MaterialIcons name="home" size={30} color={currentIndex==='Home'?"red":"white"} />} text={'Home'} />
+      <Navitem Icon={<AntDesign name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
+      <Navitem Icon={<MaterialIcons name="person" size={30} color={currentIndex==='Profile'?"red":"white"} />} text={'Profile'} />
+      <Navitem Icon={<MaterialIcons name="bookmark" size={30} color={currentIndex==='Collections'?"red":"white"} />} text={'Collections'} />
+      <Navitem Icon={<MaterialIcons name="more" size={30} color={currentIndex==='More'?"red":"white"} />} text={'More'} />
     </View>
     </View>
   );
@@ -20,11 +24,17 @@ export default function Navbar() {
 
 function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
 {
+  const dispatch = useDispatch()
+  const {currentIndex} = useSelector((state:any)=>state.info)
   return(
-    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+    <Pressable style={{flex:1,justifyContent:'center',alignItems:'center'}}
+    onPress={()=>{dispatch(setCurrentIndex(text))}}
+    >
       {Icon}
-      <Text style={{fontSize: 9,color: 'white'}}>{text}</Text>
-    </View>
+      <Text style={{fontSize: 10,color: currentIndex===text?"red":"white"}}
+      // onPress={()=>{dispatch(setCurrentIndex(text))}}
+      >{text}</Text>
+    </Pressable>
   )
 }
 const styles = StyleSheet.create({
@@ -35,12 +45,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-
   },
   topContainer: {
+    position: 'absolute',
+    bottom: 0,
+    height: 60,
     width: '100%',
-    height: height,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    zIndex: 10,
   },
 });

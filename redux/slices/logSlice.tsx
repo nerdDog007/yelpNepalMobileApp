@@ -9,7 +9,6 @@ const authSlice = createSlice({
      email:"",
      password:"",
      hasAccount:false,
-     token:"",
     },
   reducers: {
     login: (state, action) => {
@@ -27,18 +26,15 @@ const authSlice = createSlice({
     setEmail:(state,action)=>{
       state.email= action.payload
     },
-    setPassword:(state,action)=>{
+    setLogPassword:(state,action)=>{
       state.password=action.payload
     },
     setHasAccount:(state,action)=>{
       state.hasAccount= action.payload
-    },
-    setToken:(state,action)=>{
-      state.token= action.payload
     }
 
   },
 });
 
-export const { login, logout,setLat,setLong ,setToken,setEmail,setPassword,setHasAccount} = authSlice.actions;
+export const { login, logout,setLat,setLong ,setEmail,setLogPassword,setHasAccount} = authSlice.actions;
 export default authSlice.reducer;

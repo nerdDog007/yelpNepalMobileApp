@@ -1,33 +1,40 @@
+import { setToken, setUser } from "@/redux/slices/Info";
+import { getUserData } from "@/utils/storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Index() {
-  const router = useRouter();
-  const user = useSelector((state) => state.info.user);
-  const [isReady, setIsReady] = useState(false); // Wait until first render
-
-  // Mark component as mounted
-  useEffect(() => {
+  const dispatch = useDispatch();
+  async function FetchFromStorage(){
+    const { user, token } = await getUserData();
+    console.log(user,token)
+    if (user && token) {
+      dispatch(setUser(user));
+      dispatch(setToken(token))
+    }
     setIsReady(true);
+  }
+  const router = useRouter();
+  const user = useSelector((state: any) => state.info.user);
+  const [isReady, setIsReady] = useState(false); 
+  useEffect( () => {
+    FetchFromStorage()
   }, []);
 
-  // Redirect when mounted and user state updates
   useEffect(() => {
-    if (!isReady) return; // wait for mount
-    // if (!user) return;    // wait for user to load
+    if (!isReady) return; 
 
     console.log("Current user state:", user);
 
-    if (user.success) {
-      router.replace("/(tabs)/Dashboard"); // go to dashboard
+    if ( user && user.success) {
+      router.push("/(tabs)/Dashboard");
     } else {
-      router.replace("/(tabs)/LandingPage"); // go to landing page
+      router.push("/(tabs)/LandingPage");
     }
   }, [isReady, user]);
-
-  // Loader while redirecting
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size="large" color="red" />
