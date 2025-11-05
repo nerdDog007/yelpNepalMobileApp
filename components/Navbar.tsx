@@ -1,16 +1,19 @@
 import { setCurrentIndex } from '@/redux/slices/Info';
 import { EvilIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { useRouter } from "expo-router";
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from 'react-redux';
+
 const { height } = Dimensions.get('window');
 export default function Navbar() {
+
   const insets = useSafeAreaInsets();
   const {currentIndex} = useSelector((state:any)=>state.info)
 
   return (
-    <View style={{...styles.topContainer,bottom:insets.bottom}}>
+    <View style={{...styles.topContainer,bottom:0}}>
     <View style={styles.container}>
       <Navitem Icon={<MaterialIcons name="search" size={30} color={currentIndex==='Search'?"red":"white"} />} text={'Search'} />
       <Navitem Icon={<Octicons name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
@@ -24,11 +27,15 @@ export default function Navbar() {
 function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
 {
   const dispatch = useDispatch()
+  const router = useRouter()
   const {currentIndex} = useSelector((state:any)=>state.info)
+   function handlePress(){
+           dispatch(setCurrentIndex(text))
+          router.push(`/(tabs)/Dashboard/${text}`);
+  }
   return(
     <Pressable style={{flex:1,justifyContent:'center',alignItems:'center'}}
-    onPress={()=>{dispatch(setCurrentIndex(text))}}
-    >
+    onPress={handlePress}>
       {Icon}
       <Text style={{fontSize: 10,color: currentIndex===text?"red":"white"}}
       >{text}</Text>

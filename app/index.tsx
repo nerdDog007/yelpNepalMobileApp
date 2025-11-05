@@ -3,8 +3,7 @@ import { getUserData } from "@/utils/storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -28,9 +27,8 @@ export default function Index() {
     if (!isReady) return; 
 
     console.log("Current user state:", user);
-
     if ( user && user.success) {
-      router.push("/(tabs)/Dashboard");
+      router.replace("/(tabs)/Dashboard/Search");
     } else {
       router.push("/(tabs)/LandingPage");
     }

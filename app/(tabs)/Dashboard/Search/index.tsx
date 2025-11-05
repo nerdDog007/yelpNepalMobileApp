@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import More from "@/pages/Dashboard/More/More";
 import { Dimensions, View } from "react-native";
 // import { height } from "react-native-dimensions-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -11,17 +10,14 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const { user ,currentIndex} = useSelector((state:any) => state.info);
   return (
-    <View
-      style={{
-        flex: 0,
-        backgroundColor: "white",
-        paddingBottom: insets.bottom+height*.1,
-        height: '100%',
-      }}>
-      <Navbar />
-      {
-        currentIndex === 'More'&& <More/>
-      }
-    </View>
+  <View
+    style={{
+      flex: 0,
+      backgroundColor: "white",
+      paddingBottom: insets.bottom+height*.1,
+      height: '100%',
+    }}>
+    <Navbar />
+  </View>
   );
 }

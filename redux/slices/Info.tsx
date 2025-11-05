@@ -7,7 +7,7 @@ export const infoSlice = createSlice({
         
     },
     token:'',
-    currentIndex:'Home'
+    currentIndex:'Search'
   },
   reducers: {
     setUser: (state, action) => {
