@@ -14,12 +14,11 @@ export default function Dashboard() {
   <View
     style={{
       flex: 0,
-      backgroundColor: "white",
+      backgroundColor: "black",
       paddingBottom: insets.bottom+height*.1,
       height: '100%',
     }}>
     <Navbar />
-    <More/>
   </View>
   );
 }

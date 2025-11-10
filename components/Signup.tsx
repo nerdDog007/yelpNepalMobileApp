@@ -1,13 +1,13 @@
 import { setToken, setUser } from "@/redux/slices/Info";
 import { setHasAccount, setLogPassword } from "@/redux/slices/logSlice";
 import { nextStep, prevStep, setEmail, setFullName, setPassword } from "@/redux/slices/SignUp";
+import { storeUserData } from "@/utils/storage";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { Animated, Dimensions, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import storage, { storeUserData } from "@/utils/storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -99,7 +99,7 @@ function Welcome()
     };
   } , []);
   return (
-    <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+    <View style={{ flex: 1, backgroundColor: "black" }}>
       
       <ScrollView
         contentContainerStyle={{
@@ -193,7 +193,7 @@ function Welcome()
               alignItems: "center",
             }}
             onPress={async ()=>{
-              if (password.length>0) {
+              if (password.length>6) {
                 try {
                   const res = await fetch("http://192.168.1.146:3000/api/login", {
                     method: "POST",
@@ -205,13 +205,11 @@ function Welcome()
                       password:password
                     }),
                   });
-            
                   const data = await res.json();
-            
                   if (data.success) {
                     dispatch(setUser(data));
                     dispatch(setToken(data.token))
-                    router.replace("/(tabs)/Dashboard");
+                    router.replace("/(tabs)/Dashboard/Search");
                     await storeUserData(data,data.token)
                   } else {
                     setErrorMsg("Invalid Password");
@@ -260,10 +258,8 @@ function Name(){
   const {fullName,email,password} = useSelector((state:any)=>state.signup)
   const {coord} = useSelector((state:any)=>state.auth)
   const user = useSelector((state) => state.info.user);
-
-  
  return(
-  <View style={{flex:1,justifyContent:'start',alignItems:'start',padding:15}}>
+  <View style={{flex:1,justifyContent:'start',alignItems:'start',padding:15,backgroundColor:'white'}}>
     <View style={{width:'100%',borderBottomColor:'pink',borderBottomWidth:1,paddingBottom:10}}>
     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:"center",width:'60%'}}>
     <MaterialIcons name="arrow-back" size={28} color="black" onPress={()=>{dispatch(prevStep())}}/>
@@ -312,8 +308,7 @@ function Name(){
         dispatch(setUser(data));
         dispatch(setToken(data.token))
         await storeUserData(data,data.token)
-        router.replace("/(tabs)/Dashboard");
-        
+        router.replace("/(tabs)/Dashboard/Search");
       } else {
         console.log("Signup failed:", data.message);
       }
