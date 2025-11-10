@@ -34,13 +34,12 @@ export default function MapScreen() {
             const res = await fetch("http://192.168.1.146:3000/api/location", {
               method: "POST",
               headers: {
-                "Content-Type": "application/json", // Always add this for JSON
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                coords : coords
               }),
             });
-      
             const data = await res.json();
             console.log("Server response:", data.display_name);
             dispatch(setLocationName(data.display_name))

@@ -1,4 +1,4 @@
-import { setSearch, setSearchBtn } from '@/redux/slices/SearchPageSlice'
+import { setSearch } from '@/redux/slices/SearchPageSlice'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Text, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
@@ -9,8 +9,8 @@ export default function Search(){
     const search = useSelector((state:any)=>state.SearchPage.search)    
     return(
       <>
-        <View style={{width:'100%',borderWidth:1,borderColor:'white',padding:6,marginTop:14,display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-            <MaterialIcons name='search' size={30} color='white' />
+        <View style={{width:'100%',borderWidth:1,borderRadius:100,borderColor:'white',padding:6,marginTop:14,display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+            <MaterialIcons name='search' size={30} color='white' style={{backgroundColor:'red',borderRadius:100}} />
             <TextInput style={{backgroundColor:'black', textDecorationColor: 'white',height:10,borderBottomWidth:0,borderColor:'green',width:'90%'}}
             underlineColorAndroid="transparent"
             placeholderTextColor="white"
@@ -18,8 +18,6 @@ export default function Search(){
             textColor="white"
             onChangeText={(text)=>dispatch(setSearch(text))}
             placeholder="Search"
-            onPressIn={()=>dispatch(setSearchBtn(true))}
-            onPressOut={()=>dispatch(setSearchBtn(false))}
             />
         </View>
         {search.length>2&&<View
@@ -29,12 +27,14 @@ export default function Search(){
     marginTop: 10,
     backgroundColor: "red",
     paddingVertical: 6,
+    borderRadius:100
   }}
 >
   <Text style={{
       textAlign: "center",
       fontSize: 12,
       color: "white",
+     
     }}>
     Search
   </Text>

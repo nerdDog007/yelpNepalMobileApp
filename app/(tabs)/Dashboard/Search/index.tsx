@@ -17,7 +17,6 @@ export default function Dashboard() {
     style={{
       flex: 1,
       backgroundColor: "black",
-      paddingBottom: insets.bottom+height*.1,
     }}>
     <Navbar />
     <Search />

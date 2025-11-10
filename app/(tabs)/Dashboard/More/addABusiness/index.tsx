@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function AddBusiness() {
@@ -25,7 +26,9 @@ export default function AddBusiness() {
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
   const {locationName,locationCoord }  = useSelector((state:any)=>state.business)
+  const [sending,setSending] = useState(false)
   console.log(locationCoord);
+  console.log(locationName);
   
   const dispatch = useDispatch()
   const pickImage = async () => {
@@ -68,15 +71,16 @@ export default function AddBusiness() {
     formData.append('businessName', businessName);
     formData.append("location", JSON.stringify(locationCoord));
     formData.append('userId', user.user.user_id);
+    formData.append('locationName', locationName);
     try {
+      setSending(true)
       const response = await fetch("http://192.168.1.146:3000/api/business", {
         method: "POST",
         body: formData,
       });
-      console.log("this");
-
       const data = await response.json();
       console.log(data);
+      setSending(false)
       router.back();
     } catch (err) {
       console.log(err);
@@ -128,13 +132,15 @@ export default function AddBusiness() {
         style={styles.input}
         placeholder="Location"
         value={locationName}
-        onChangeText={setLocation}
         onPress={()=>{
           dispatch(setMap(true))
         }}
         />
 
       <Button title="Submit" onPress={handleSubmit} />
+      {sending===true&&<View>
+        <ActivityIndicator size="large" color="red" />
+      </View>}
     </ScrollView>:<Map/>}
 </>
   );
