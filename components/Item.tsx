@@ -5,9 +5,11 @@ import { Text, View } from "react-native";
 {
     return(
         <Link href={href} style={{ textDecorationLine: 'none' }}>
-            <View style={{ width:'100%',flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingBottom: 4, borderBottomWidth: 1, borderColor: 'rgba(0, 0, 0, 0.1)' }}>
+
+            {/* <TouchableOpacity></TouchableOpacity> */}
+            <View style={{ width:'100%',flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(255, 2555, 255, 0.4)' }}>
                 {icon}
-                <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 10 }}>{text}</Text>
+                <Text style={{ fontSize: 16,color:'white', fontWeight: '500', marginLeft: 10 }}>{text}</Text>
             </View>
         </Link>
     )

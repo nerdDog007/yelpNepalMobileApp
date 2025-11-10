@@ -1,5 +1,5 @@
 import { setCurrentIndex } from '@/redux/slices/Info';
-import { EvilIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import React from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -15,11 +15,10 @@ export default function Navbar() {
   return (
     <View style={{...styles.topContainer,bottom:0}}>
     <View style={styles.container}>
-      <Navitem Icon={<MaterialIcons name="search" size={30} color={currentIndex==='Search'?"red":"white"} />} text={'Search'} />
-      <Navitem Icon={<Octicons name="project" size={30} color={currentIndex==='Projects'?"red":"white"} />} text={'Projects'} />
-      <Navitem Icon={<MaterialIcons name="person" size={30} color={currentIndex==='Profile'?"red":"white"} />} text={'Profile'} />
-      <Navitem Icon={<MaterialIcons name="bookmark" size={30} color={currentIndex==='Collections'?"red":"white"} />} text={'Collections'} />
-      <Navitem Icon={<EvilIcons name="navicon" size={30} color={currentIndex==='More'?"red":"white"} />} text={'More'} />
+      <Navitem Icon={<MaterialIcons name="search" size={30} color={currentIndex==='Search'?"red":"black"} />} text={'Search'} />
+      <Navitem Icon={<MaterialIcons name="person" size={30} color={currentIndex==='Profile'?"red":"black"} />} text={'Profile'} />
+      <Navitem Icon={<MaterialIcons name="bookmark" size={30} color={currentIndex==='Collections'?"red":"black"} />} text={'Collections'} />
+      <Navitem Icon={<EvilIcons name="navicon" size={30} color={currentIndex==='More'?"red":"black"} />} text={'More'} />
     </View>
     </View>
   );
@@ -37,7 +36,7 @@ function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
     <Pressable style={{flex:1,justifyContent:'center',alignItems:'center'}}
     onPress={handlePress}>
       {Icon}
-      <Text style={{fontSize: 10,color: currentIndex===text?"red":"white"}}
+      <Text style={{fontSize: 10,color: currentIndex===text?"red":"black"}}
       >{text}</Text>
     </Pressable>
   )
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
   container: {           
     width: '100%',
     height: height *.1,
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

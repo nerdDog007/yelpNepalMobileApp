@@ -7,7 +7,8 @@ export const infoSlice = createSlice({
         
     },
     token:'',
-    currentIndex:'Search'
+    currentIndex:'Search',
+    map:false
   },
   reducers: {
     setUser: (state, action) => {
@@ -20,8 +21,11 @@ export const infoSlice = createSlice({
     setCurrentIndex: (state, action) => {
       state.currentIndex = action.payload;
     },
+    setMap: (state, action) => {
+      state.map = action.payload;
+    },
   },
 });
 
-export const { setUser,setToken ,setCurrentIndex} = infoSlice.actions;
+export const { setUser,setToken ,setCurrentIndex,setMap} = infoSlice.actions;
 export default infoSlice.reducer;

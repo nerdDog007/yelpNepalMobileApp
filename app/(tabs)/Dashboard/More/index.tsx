@@ -1,5 +1,5 @@
+import More from "@/components/More";
 import Navbar from "@/components/Navbar";
-import More from "@/pages/Dashboard/More/More";
 import { Dimensions, View } from "react-native";
 // import { height } from "react-native-dimensions-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,9 +14,9 @@ export default function Dashboard() {
   <View
     style={{
       flex: 1,
-      backgroundColor: "red",
       paddingBottom: insets.bottom+height*0.02,
       // height: height - height*0.1,
+      // padding:12
     }}>
     <Navbar />
     <More/>

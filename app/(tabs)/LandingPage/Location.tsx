@@ -1,9 +1,9 @@
 import * as Location from "expo-location";
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { setLat, setLong } from "../../../redux/slices/logSlice";
-import { useRouter } from 'expo-router';
 
 export default function LocationRequest() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "black",
   },
   card: {
     width: "85%",
