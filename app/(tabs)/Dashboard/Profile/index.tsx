@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
-import More from "@/pages/Dashboard/More/More";
+import { setCurrentIndex } from "@/redux/slices/Info";
+import { useEffect } from "react";
 import { Dimensions, View } from "react-native";
 // import { height } from "react-native-dimensions-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -10,6 +11,9 @@ export default function Dashboard() {
   const height = Dimensions.get("window").height;
   const dispatch = useDispatch();
   const { user ,currentIndex} = useSelector((state:any) => state.info);
+   useEffect(() => {
+      dispatch(setCurrentIndex("Profile"));
+    }, []);
   return (
   <View
     style={{

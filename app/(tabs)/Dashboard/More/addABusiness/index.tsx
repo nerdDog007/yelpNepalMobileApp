@@ -1,10 +1,11 @@
 import { setMap } from '@/redux/slices/Info';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from "expo-router";
 import React, { useState } from 'react';
 import Map from '../../../../../components/Map';
 
+import { setIndex } from '@/redux/slices/business';
 import {
   Button,
   Image,
@@ -25,10 +26,8 @@ export default function AddBusiness() {
   const [images, setImages] = useState<string[]>([]);
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
-  const {locationName,locationCoord }  = useSelector((state:any)=>state.business)
+  const {locationName,locationCoord ,index}  = useSelector((state:any)=>state.business)
   const [sending,setSending] = useState(false)
-  console.log(locationCoord);
-  console.log(locationName);
   
   const dispatch = useDispatch()
   const pickImage = async () => {
@@ -74,7 +73,7 @@ export default function AddBusiness() {
     formData.append('locationName', locationName);
     try {
       setSending(true)
-      const response = await fetch("http://192.168.1.146:3000/api/business", {
+      const response = await fetch("http://192.168.1.146:3000/api/business/create", {
         method: "POST",
         body: formData,
       });
@@ -90,7 +89,7 @@ export default function AddBusiness() {
 
   return (
     <>
-    {map === false?<ScrollView contentContainerStyle={styles.container}>
+    {map === false && index===0 &&<ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add Your Business</Text>
 
       <View style={styles.imagePickerContainer}>
@@ -120,7 +119,7 @@ export default function AddBusiness() {
           )}
         </View>
       </View>
-
+          
       <TextInput
         style={styles.input}
         placeholder="Business Name"
@@ -136,14 +135,51 @@ export default function AddBusiness() {
           dispatch(setMap(true))
         }}
         />
-
-      <Button title="Submit" onPress={handleSubmit} />
+        <View>
+        </View>
+      <Button title="Next" onPress={()=>{dispatch(setIndex())}} />
       {sending===true&&<View>
         <ActivityIndicator size="large" color="red" />
       </View>}
-    </ScrollView>:<Map/>}
+    </ScrollView>}
+    {map === true && index===0 && <Map/>} 
+    {index===1 && <BusinessHours onPress={handleSubmit} form ={FormData}/>}
 </>
   );
+}
+
+function BusinessHours({onPress,FormData}:any){
+  
+  return(
+    <View style={{flex:1,justifyContent:'start',alignItems:'start',padding:15,backgroundColor:'white'}}>
+      <Text style={{fontSize:20,fontWeight:'500',textAlign:'center'}}>Business Hours</Text>
+      <View style={{flexDirection:'column',justifyContent:'space-between',alignItems:'center',gap:4}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
+          <MaterialIcons name="toggle-on" size={30} color="blue" />
+          <Text style={{fontSize:16}}>Sunday to Thursday</Text>
+        </View>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
+          <TextInput 
+          placeholder='Opens at'
+          />
+          <Text style={{fontSize:12,color:'white',backgroundColor:'gray',padding:5,borderRadius:5}}>
+            AM
+          </Text>
+        </View>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
+          <TextInput 
+          placeholder='Closes at'
+          />
+          <Text style={{fontSize:12,color:'white',backgroundColor:'gray',padding:5,borderRadius:5}}>
+            AM
+          </Text>
+        </View>
+       </View>
+      </View>
+      <Button title="Submit" onPress={onPress} />
+    </View>
+  )
 }
 const styles = StyleSheet.create({
   container: {

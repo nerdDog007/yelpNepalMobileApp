@@ -34,7 +34,7 @@ function Welcome()
   const router = useRouter();
 
   async function checkUser(){
-    const res = await fetch("http://192.168.1.146:3000/api/users", {
+    const res = await fetch("http://192.168.1.146:3000/api/auth/checkEmail", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -44,10 +44,12 @@ function Welcome()
       })
     });
     const data = await res.json();
+    console.log(data.hasAccount)
+    
     if (data.hasAccount) {
       dispatch(setHasAccount(true))
     }
-    else if (data.hasAccount===false && data.isValidEmail) {
+    else if (data.hasAccount===false) {
       dispatch(setHasAccount(false))
       dispatch(nextStep())
     }
@@ -193,9 +195,9 @@ function Welcome()
               alignItems: "center",
             }}
             onPress={async ()=>{
-              if (password.length>6) {
+              if (password.length>3) {
                 try {
-                  const res = await fetch("http://192.168.1.146:3000/api/login", {
+                  const res = await fetch("http://192.168.1.146:3000/api/auth/login", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -289,7 +291,7 @@ function Name(){
   }}
   onPress={async () => {
     try {
-      const res = await fetch("http://192.168.1.146:3000/api/signup", {
+      const res = await fetch("http://192.168.1.146:3000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

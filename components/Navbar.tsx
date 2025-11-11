@@ -25,11 +25,9 @@ export default function Navbar() {
 }
 function Navitem({Icon,text}:{Icon:JSX.Element,text:string})
 {
-  const dispatch = useDispatch()
   const router = useRouter()
   const {currentIndex} = useSelector((state:any)=>state.info)
    function handlePress(){
-           dispatch(setCurrentIndex(text))
           router.push(`/(tabs)/Dashboard/${text}`);
   }
   return(
