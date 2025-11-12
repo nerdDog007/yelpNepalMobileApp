@@ -4,7 +4,6 @@ export const infoSlice = createSlice({
   name: "info",
   initialState: {
     user: {
-        
     },
     token:'',
     currentIndex:'Search',

@@ -10,6 +10,7 @@ export const businessSlice = createSlice({
     },
     locationName:'',
     index:0,
+    description:'',
     hours:{
       sunday:{
         open:'',
@@ -42,6 +43,9 @@ export const businessSlice = createSlice({
     }
   },
   reducers: {
+    setDescription: (state, action) => {
+      state.description = action.payload;
+    },
     setBusinesses: (state, action) => {
       state.businessName = action.payload;
     },
@@ -88,5 +92,5 @@ export const businessSlice = createSlice({
   },
 });
 
-export const { setBusinesses, setLocation,setLocationName,setIndex,prevIdex ,setSunday,setMonday,setTuesday,setWednesday,setThursday,setFriday,setSaturday } = businessSlice.actions;
+export const { setBusinesses, setLocation,setLocationName,setIndex,prevIdex ,setDescription,setSunday,setMonday,setTuesday,setWednesday,setThursday,setFriday,setSaturday } = businessSlice.actions;
 export default businessSlice.reducer;

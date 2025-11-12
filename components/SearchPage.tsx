@@ -1,5 +1,6 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import renderStars from './ratingStar';
@@ -10,6 +11,7 @@ const getAverageRating = (ratingArray) => {
     return sum / ratingArray.length;
   };
 function Search(){    
+    const router = useRouter();
     const { user } = useSelector((state: any) => state.info);
     const fetchData = async () => {
         const response = await fetch(`http://192.168.1.146:3000/api/business/search`);
@@ -20,6 +22,9 @@ function Search(){
         queryKey: ['search'],
         queryFn:fetchData
     }) 
+     const onpress=()=>{
+        router.push(`/(tabs)/Dashboard/Search/Search`)
+    }
     if (isLoading) {
         return <ActivityIndicator size="large" color="red" />
     }
@@ -31,7 +36,7 @@ function Search(){
                 <Ap Icon={<AntDesign name="truck" size={20} color="white" />} text="Movers" />
                 <Ap Icon={<MaterialIcons name="plumbing" size={20} color="white" />} text="Plumbers" />
             </View>
-            <Searchh/>  
+            <Searchh onPress={onpress}/>  
             {
                 data?.map((business:any)=>{
                     return(

@@ -1,11 +1,11 @@
 import { setMap } from '@/redux/slices/Info';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from "expo-router";
 import React, { useState } from 'react';
 import Map from '../../../../../components/Map';
 
-import { setIndex } from '@/redux/slices/business';
+import { setDescription } from '@/redux/slices/business';
 import {
   Button,
   Image,
@@ -26,7 +26,7 @@ export default function AddBusiness() {
   const [images, setImages] = useState<string[]>([]);
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
-  const {locationName,locationCoord ,index}  = useSelector((state:any)=>state.business)
+  const {locationName,locationCoord ,description}  = useSelector((state:any)=>state.business)
   const [sending,setSending] = useState(false)
   
   const dispatch = useDispatch()
@@ -55,7 +55,8 @@ export default function AddBusiness() {
       alert("Fill all fields & upload at least one image.");
       return;
     }
-
+    console.log(locationCoord)
+    
     const formData = new FormData();
     images.forEach((imgUri, index) => {
       formData.append('images', {
@@ -64,13 +65,13 @@ export default function AddBusiness() {
         name: `image_${index}.jpg`,
       } as any);
     });
-    console.log(user.user.user_id);
+    console.log(user);
     console.log(locationCoord);
-    
     formData.append('businessName', businessName);
     formData.append("location", JSON.stringify(locationCoord));
     formData.append('userId', user.user.user_id);
     formData.append('locationName', locationName);
+    formData.append('description', description);
     try {
       setSending(true)
       const response = await fetch("http://192.168.1.146:3000/api/business/create", {
@@ -89,7 +90,7 @@ export default function AddBusiness() {
 
   return (
     <>
-    {map === false && index===0 &&<ScrollView contentContainerStyle={styles.container}>
+    {map === false &&<ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add Your Business</Text>
 
       <View style={styles.imagePickerContainer}>
@@ -126,7 +127,12 @@ export default function AddBusiness() {
         value={businessName}
         onChangeText={setBusinessName}
         />
-
+        <TextInput
+        style={styles.input}
+        placeholder="About Business in a few words"
+        value={description}
+        onChangeText={(text) => dispatch(setDescription(text))}
+        />
       <TextInput
         style={styles.input}
         placeholder="Location"
@@ -137,49 +143,14 @@ export default function AddBusiness() {
         />
         <View>
         </View>
-      <Button title="Next" onPress={()=>{dispatch(setIndex())}} />
+      <Button title="Submit" onPress={handleSubmit} />
       {sending===true&&<View>
         <ActivityIndicator size="large" color="red" />
       </View>}
     </ScrollView>}
-    {map === true && index===0 && <Map/>} 
-    {index===1 && <BusinessHours onPress={handleSubmit} form ={FormData}/>}
+    {map === true  && <Map/>} 
 </>
   );
-}
-
-function BusinessHours({onPress,FormData}:any){
-  
-  return(
-    <View style={{flex:1,justifyContent:'start',alignItems:'start',padding:15,backgroundColor:'white'}}>
-      <Text style={{fontSize:20,fontWeight:'500',textAlign:'center'}}>Business Hours</Text>
-      <View style={{flexDirection:'column',justifyContent:'space-between',alignItems:'center',gap:4}}>
-        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
-          <MaterialIcons name="toggle-on" size={30} color="blue" />
-          <Text style={{fontSize:16}}>Sunday to Thursday</Text>
-        </View>
-        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
-        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
-          <TextInput 
-          placeholder='Opens at'
-          />
-          <Text style={{fontSize:12,color:'white',backgroundColor:'gray',padding:5,borderRadius:5}}>
-            AM
-          </Text>
-        </View>
-        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',gap:4}}>
-          <TextInput 
-          placeholder='Closes at'
-          />
-          <Text style={{fontSize:12,color:'white',backgroundColor:'gray',padding:5,borderRadius:5}}>
-            AM
-          </Text>
-        </View>
-       </View>
-      </View>
-      <Button title="Submit" onPress={onPress} />
-    </View>
-  )
 }
 const styles = StyleSheet.create({
   container: {
