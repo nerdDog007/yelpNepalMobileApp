@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { store } from "../redux/store";
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
-  console.log(insets);
   const usableHeight = Dimensions.get("window").height - insets.top - insets.bottom;
   const queryClient = new QueryClient();
   return (

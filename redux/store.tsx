@@ -4,6 +4,7 @@ import authReducer from "./slices/logSlice";
 import SignUp from "./slices/SignUp";
 import businessSlice from "./slices/business";
 import SearchPageSlice from "./slices/SearchPageSlice";
+import Result from './slices/SearchResult'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     signup: SignUp,
     info:Info,
     business:businessSlice,
-    SearchPage:SearchPageSlice
+    SearchPage:SearchPageSlice,
+    searchResult:Result
   },
 });
 

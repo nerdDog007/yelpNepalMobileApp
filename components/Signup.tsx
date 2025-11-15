@@ -44,7 +44,6 @@ function Welcome()
       })
     });
     const data = await res.json();
-    console.log(data.hasAccount)
     
     if (data.hasAccount) {
       dispatch(setHasAccount(true))
@@ -311,9 +310,7 @@ function Name(){
         dispatch(setToken(data.token))
         await storeUserData(data,data.token)
         router.replace("/(tabs)/Dashboard/Search");
-      } else {
-        console.log("Signup failed:", data.message);
-      }
+      } 
     } catch (err) {
       console.error(err);
     }

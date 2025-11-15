@@ -15,7 +15,6 @@ export const infoSlice = createSlice({
     },
     setToken: (state, action) => {
       state.token = action.payload;
-      console.log(state.token)
     },
     setCurrentIndex: (state, action) => {
       state.currentIndex = action.payload;

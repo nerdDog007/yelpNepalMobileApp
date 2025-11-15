@@ -15,7 +15,6 @@ export const getUserData = async () => {
   try {
     const user = await AsyncStorage.getItem('user');
     const token = await AsyncStorage.getItem('token');
-    console.log(user,token)
     return {
       user: user ? JSON.parse(user) : null,
       token: token || null,

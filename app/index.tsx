@@ -31,7 +31,6 @@ export default function Index() {
     if (isLoading) return;
 
     if (data?.user && data?.token && data.user.success) {
-      console.log("User found:", data.user);
       router.replace("/(tabs)/Dashboard/Search");
     } else {
       router.push("/(tabs)/LandingPage");

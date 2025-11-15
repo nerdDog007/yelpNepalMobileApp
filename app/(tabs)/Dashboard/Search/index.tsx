@@ -14,7 +14,7 @@ export default function Dashboard() {
   const height = Dimensions.get("window").height;
   const dispatch = useDispatch();
   const { user } = useSelector((state:any) => state.info);
-  console.log(user);
+ 
  
   useEffect(() => {
     dispatch(setCurrentIndex("Search"));

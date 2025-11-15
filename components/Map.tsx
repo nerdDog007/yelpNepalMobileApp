@@ -41,7 +41,6 @@ export default function MapScreen() {
               }),
             });
             const data = await res.json();
-            console.log("Server response:", data.display_name);
             dispatch(setLocationName(data.display_name))
             dispatch(setMap(false))
           } catch (error) {

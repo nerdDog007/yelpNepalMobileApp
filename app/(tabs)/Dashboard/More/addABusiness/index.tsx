@@ -5,16 +5,18 @@ import { useRouter } from "expo-router";
 import React, { useState } from 'react';
 import Map from '../../../../../components/Map';
 
-import { setDescription } from '@/redux/slices/business';
+import { setDescription, setShortDescription } from '@/redux/slices/business';
 import {
   Button,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,9 +28,8 @@ export default function AddBusiness() {
   const [images, setImages] = useState<string[]>([]);
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
-  const {locationName,locationCoord ,description}  = useSelector((state:any)=>state.business)
+  const {locationName,locationCoord ,description,shortDescription}  = useSelector((state:any)=>state.business)
   const [sending,setSending] = useState(false)
-  
   const dispatch = useDispatch()
   const pickImage = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -55,8 +56,6 @@ export default function AddBusiness() {
       alert("Fill all fields & upload at least one image.");
       return;
     }
-    console.log(locationCoord)
-    
     const formData = new FormData();
     images.forEach((imgUri, index) => {
       formData.append('images', {
@@ -65,13 +64,13 @@ export default function AddBusiness() {
         name: `image_${index}.jpg`,
       } as any);
     });
-    console.log(user);
-    console.log(locationCoord);
+
     formData.append('businessName', businessName);
     formData.append("location", JSON.stringify(locationCoord));
     formData.append('userId', user.user.user_id);
     formData.append('locationName', locationName);
     formData.append('description', description);
+    formData.append('shortDescription', shortDescription);
     try {
       setSending(true)
       const response = await fetch("http://192.168.1.146:3000/api/business/create", {
@@ -79,18 +78,23 @@ export default function AddBusiness() {
         body: formData,
       });
       const data = await response.json();
-      console.log(data);
+      
       setSending(false)
       router.back();
     } catch (err) {
-      console.log(err);
+      
       alert("Upload failed.");
     }
   };
 
   return (
     <>
-    {map === false &&<ScrollView contentContainerStyle={styles.container}>
+    {map === false &&
+    <KeyboardAvoidingView 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+    >
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add Your Business</Text>
 
       <View style={styles.imagePickerContainer}>
@@ -99,7 +103,6 @@ export default function AddBusiness() {
             <Text style={styles.imagePlaceholder}>Tap to upload images</Text>
           </TouchableOpacity>
         )}
-
         <View style={styles.imagesRow}>
           {images.map((uri, index) => (
             <View key={index} style={styles.imageWrapper}>
@@ -129,9 +132,17 @@ export default function AddBusiness() {
         />
         <TextInput
         style={styles.input}
-        placeholder="About Business in a few words"
+        placeholder="About Business in one line"
         value={description}
         onChangeText={(text) => dispatch(setDescription(text))}
+        />
+        <TextInput
+        style={[
+          styles.input
+        ]}
+        placeholder="About Business in 2 or 3 words"
+        value={shortDescription}
+        onChangeText={(text) => dispatch(setShortDescription(text))}
         />
       <TextInput
         style={styles.input}
@@ -147,7 +158,9 @@ export default function AddBusiness() {
       {sending===true&&<View>
         <ActivityIndicator size="large" color="red" />
       </View>}
-    </ScrollView>}
+    </ScrollView>
+    </KeyboardAvoidingView>
+    }
     {map === true  && <Map/>} 
 </>
   );

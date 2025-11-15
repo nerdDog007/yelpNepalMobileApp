@@ -10,15 +10,11 @@ export default function LocationRequest() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log("this")
   const requestLocation = async () => {
     setLoading(true);
     setErrorMsg(null);
-    console.log("thisss")
     try {
-      console.log("Requesting location permission...");
       const { status } = await Location.requestForegroundPermissionsAsync();
-      console.log("Permission status:", status);
 
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");

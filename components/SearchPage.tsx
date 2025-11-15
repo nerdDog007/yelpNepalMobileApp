@@ -1,9 +1,9 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'expo-router';
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import renderStars from './ratingStar';
+import BusinessCard from './business.card';
 import Searchh from './search';
 const getAverageRating = (ratingArray) => {
     if (!ratingArray || ratingArray.length === 0) return 0;
@@ -14,8 +14,10 @@ function Search(){
     const router = useRouter();
     const { user } = useSelector((state: any) => state.info);
     const fetchData = async () => {
-        const response = await fetch(`http://192.168.1.146:3000/api/business/search`);
+        const response = await fetch(`http://192.168.1.146:3000/api/business/searchAll`);
+        console.log("this.com");
         const data = await response.json();
+        console.log(data);
         return data;
     };
     const { data, isLoading } = useQuery({
@@ -40,36 +42,9 @@ function Search(){
             {
                 data?.map((business:any)=>{
                     return(
-                        <>
-                        <View style={{marginTop:20}} key={business.businessId}>
-                            <Text style={{fontSize:20,fontWeight:'bold',color:'white'}}>
-                                {business.businessName}
-                            </Text>
-                            <Text style={{fontSize:12,color:'white'}}>
-                                {business.locationName.substring(0,40)}
-                            </Text>
-                            <View style={{ flexDirection: "row", marginTop: 5, alignItems: "center" }}>
-                                {renderStars(getAverageRating(business.rating))}
-                                <Text style={{ color: "white", marginLeft: 6, fontSize: 12 }}>
-                                    {getAverageRating(business.rating).toFixed(1)}
-                                </Text>
-                            </View>
-                            
-                            <ScrollView 
-                            horizontal 
-                            showsHorizontalScrollIndicator={false}
-                            style={{ marginVertical: 10 }}
-                            >
-                            {business.url.map((image, index) => (
-                                <Image 
-                                source={{ uri: image }} 
-                                style={{ width: 100, height: 100, borderRadius: 10, marginRight: 10 }} 
-                                key={index} 
-                                />
-                            ))}
-                            </ScrollView>
-                        </View>
-                        </>
+                        <Link key={business.businessId} href={`/Dashboard/business/${business._id}`}>
+                        <BusinessCard key={business.businessId} data={business}/>
+                        </Link>
                     )
                 })
             }
