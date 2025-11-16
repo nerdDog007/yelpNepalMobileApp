@@ -5,6 +5,7 @@ import SignUp from "./slices/SignUp";
 import businessSlice from "./slices/business";
 import SearchPageSlice from "./slices/SearchPageSlice";
 import Result from './slices/SearchResult'
+import reviewSlice  from "./slices/reviewSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
     info:Info,
     business:businessSlice,
     SearchPage:SearchPageSlice,
-    searchResult:Result
+    searchResult:Result,
+    review:reviewSlice
   },
 });
 

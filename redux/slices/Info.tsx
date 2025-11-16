@@ -7,7 +7,8 @@ export const infoSlice = createSlice({
     },
     token:'',
     currentIndex:'Search',
-    map:false
+    map:false,
+    businessId:''
   },
   reducers: {
     setUser: (state, action) => {
@@ -22,8 +23,11 @@ export const infoSlice = createSlice({
     setMap: (state, action) => {
       state.map = action.payload;
     },
+    setBusinessId: (state, action) => {
+      state.businessId = action.payload;
+    }
   },
 });
 
-export const { setUser,setToken ,setCurrentIndex,setMap} = infoSlice.actions;
+export const { setUser,setToken ,setCurrentIndex,setMap,setBusinessId} = infoSlice.actions;
 export default infoSlice.reducer;
