@@ -1,8 +1,7 @@
-import { prevIdex, setHoursForDay } from "@/redux/slices/business";
+import { prevIdex } from "@/redux/slices/business";
 import { MaterialIcons } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
-import { Platform, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 function WorkingHours() {
@@ -16,10 +15,19 @@ function WorkingHours() {
     <View style={{padding:10}}>
       <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:'60%'}}>
             <MaterialIcons name='arrow-back' size={30} color='black' onPress={()=>dispatch(prevIdex())} />
-            <Text style={{fontSize:20,fontWeight:'500',color:'black'}}>back</Text>
+            <Text style={{fontSize:20,fontWeight:'500',color:'black'}}>Back</Text>
         </View>
-        <Ap day="Monday" open="9:00 AM" close="5:00 PM" />
-        <DateTimePicker
+        <View style={{marginTop:20}}>
+        {/* <Ap day="Monday" /> */}
+        {
+          days.map((day)=>{
+            return(
+              <Ap key={day} day={day} />
+            )
+          })
+        }
+        </View>
+        {/* <DateTimePicker
           mode="time"
           value={time}
           is24Hour={false}
@@ -35,19 +43,49 @@ function WorkingHours() {
               closed:false
             }))
           }}
-        />
+        /> */}
     </View>
   )
 }
 
-function Ap({day,open,close}:any)
+function Ap({day}:{day:string})
 {
+  const [opened, setOpened] = useState(true);
   return(
-    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center',width:'60%',marginBottom:20}}>
-      <Text style={{fontSize:20,fontWeight:'bold',color:'black'}}>
-        {day}
-      </Text>
-      <Text style={{alignSelf:'center'}}>Open</Text>
+    <View style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      // width: '60%',
+      marginBottom: 20,
+      gap: 10
+    }}>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' ,width:'50'}}>
+          {day.slice(0, 3)}
+        </Text>
+      </View>
+      
+      <View>
+        <Text style={{
+          backgroundColor: 'green',
+          paddingHorizontal: 15,
+          paddingVertical: 8,
+          borderRadius: 100,
+          color: 'white',
+          
+        }}
+        onPress={()=>setOpened(!opened)}
+        >
+          {opened ? 'Open' : 'Closed'}
+        </Text>
+      </View>
+      
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Text>10:00 AM</Text>
+        <Text>-</Text>
+        <Text>10:00 PM</Text>
+      </View>
     </View>
   )
 }
