@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialDays = {
-  sunday:    { open: "10", close: "17", closed: false },
-  monday:    { open: "", close: "", closed: false },
-  tuesday:   { open: "", close: "", closed: false },
-  wednesday: { open: "", close: "", closed: false },
-  thursday:  { open: "", close: "", closed: false },
-  friday:    { open: "", close: "", closed: false },
-  saturday:  { open: "", close: "", closed: true },
+  sunday:    { open: "10:00", close: "17:00", closed: false },
+  monday:    { open: "10:00", close: "17:00", closed: false },
+  tuesday:   { open: "10:00", close: "17:00", closed: false },
+  wednesday: { open: "10:00", close: "17:00", closed: false },
+  thursday:  { open: "10:00", close: "17:00", closed: false  },
+  friday:    { open: "10:00", close: "17:00", closed: false  },
+  saturday:  { open: "10:00", close: "17:00", closed: false  },
 };
-
 export const businessSlice = createSlice({
   name: "business",
   initialState: {
