@@ -12,10 +12,8 @@ function Searchh(){
     const dispatch = useDispatch()
     const {searchResult ,searchIndex}=useSelector((state:any)=>state.searchResult)
     async function getData(){
-        console.log("this.com,");
          const response = await axios.get(`http://192.168.1.146:3000/api/search?data=${searchIndex}`)
          const data = await response.data;
-         console.log(data);
          return data
     }
     const {isLoading,data,refetch} = useQuery({

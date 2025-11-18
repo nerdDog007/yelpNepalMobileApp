@@ -27,7 +27,6 @@ function Business({params}){
         queryFn:getData,
     })    
     const {user} = useSelector((state: any) => state.info);
-    console.log(user.user.user_id);
     
     if(isLoading){
         return(

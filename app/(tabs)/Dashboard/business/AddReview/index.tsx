@@ -1,4 +1,5 @@
 import Back from "@/components/back";
+import { setFormData } from "@/redux/slices/business";
 import { setInputReview, setStars } from "@/redux/slices/reviewSlice";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +18,6 @@ function AddReview(){
     const {stars,inputReview}=useSelector((state:any)=>state.review)
     const {businessId,user}=useSelector((state:any)=>state.info)
     const [sending,setSending]=useState(false)
-    console.log(user.user.user_id);
     
     const [height, setHeight] = React.useState(100);
       const [images, setImages] = useState<string[]>([]);
@@ -62,7 +62,6 @@ function AddReview(){
             body: formData,
           });
           const data = await response.json();
-          console.log(data);
           dispatch(setInputReview(''))
           dispatch(setStars(0))
           setImages([])
@@ -77,7 +76,6 @@ function AddReview(){
         const data = await response.data;
         return data.data
     }
-    console.log(images);
     
     const {isLoading,data}=useQuery({
         queryKey:['business',businessId],

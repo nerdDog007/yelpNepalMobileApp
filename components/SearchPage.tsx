@@ -15,9 +15,7 @@ function Search(){
     const { user } = useSelector((state: any) => state.info);
     const fetchData = async () => {
         const response = await fetch(`http://192.168.1.146:3000/api/business/searchAll`);
-        console.log("this.com");
         const data = await response.json();
-        console.log(data);
         return data;
     };
     const { data, isLoading } = useQuery({

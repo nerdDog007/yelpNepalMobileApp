@@ -5,7 +5,8 @@ import { useRouter } from "expo-router";
 import React, { useState } from 'react';
 import Map from '../../../../../components/Map';
 
-import { setDescription, setShortDescription } from '@/redux/slices/business';
+import WorkingHours from '@/components/Hours';
+import { setDescription, setIndex, setShortDescription } from '@/redux/slices/business';
 import {
   Button,
   Image,
@@ -18,7 +19,6 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function AddBusiness() {
@@ -28,7 +28,7 @@ export default function AddBusiness() {
   const [images, setImages] = useState<string[]>([]);
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
-  const {locationName,locationCoord ,description,shortDescription}  = useSelector((state:any)=>state.business)
+  const {locationName,locationCoord ,description,shortDescription,index}  = useSelector((state:any)=>state.business)
   const [sending,setSending] = useState(false)
   const dispatch = useDispatch()
   const pickImage = async () => {
@@ -64,7 +64,6 @@ export default function AddBusiness() {
         name: `image_${index}.jpg`,
       } as any);
     });
-
     formData.append('businessName', businessName);
     formData.append("location", JSON.stringify(locationCoord));
     formData.append('userId', user.user.user_id);
@@ -89,7 +88,7 @@ export default function AddBusiness() {
 
   return (
     <>
-    {map === false &&
+    {map === false && index===0 &&
     <KeyboardAvoidingView 
     behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
@@ -154,13 +153,20 @@ export default function AddBusiness() {
         />
         <View>
         </View>
-      <Button title="Submit" onPress={handleSubmit} />
-      {sending===true&&<View>
+      <Button title="Next" onPress={()=>
+      {
+        dispatch(setIndex())
+      
+      }
+
+      } />
+      {/* {sending===true&&<View>
         <ActivityIndicator size="large" color="red" />
-      </View>}
+      </View>} */}
     </ScrollView>
     </KeyboardAvoidingView>
     }
+    {index==1 &&<WorkingHours/>}
     {map === true  && <Map/>} 
 </>
   );
