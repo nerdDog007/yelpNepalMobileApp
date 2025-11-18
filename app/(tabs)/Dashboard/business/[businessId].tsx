@@ -27,6 +27,8 @@ function Business({params}){
         queryFn:getData,
     })    
     const {user} = useSelector((state: any) => state.info);
+    console.log(user.user.user_id);
+    
     if(isLoading){
         return(
             <ActivityIndicator size="large" color="red" />
@@ -51,6 +53,7 @@ function Business({params}){
                     </View>
                 </View>
             </View>
+            <MaterialIcons name="bookmark" size={28} color="white" style={{position:'absolute',top:10,right:20}} />
             <View style={{padding:10,gap:10}}>
                     <Text style={{fontSize:14,color:'white',fontWeight:'bold'}}>
                         {data.shortDescription}

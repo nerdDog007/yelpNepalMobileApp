@@ -4,7 +4,8 @@ export const reviewSlice = createSlice({
   name: "review",
   initialState: {
     reviews: '',
-    stars:0
+    stars:0,
+    inputReview:''
   },
   reducers: {
     setReviews: (state, action) => {
@@ -13,8 +14,12 @@ export const reviewSlice = createSlice({
     setStars: (state, action) => {
       state.stars = action.payload;
     },
+    setInputReview: (state, action) => {
+      state.inputReview = action.payload;
+    },
+
   },
 });
 
-export const { setReviews ,setStars} = reviewSlice.actions;
+export const { setReviews ,setStars,setInputReview} = reviewSlice.actions;
 export default reviewSlice.reducer;

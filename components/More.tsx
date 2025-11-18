@@ -44,7 +44,7 @@ export default function More() {
         <Item icon={<Feather name='activity'size={22} color="white" />}text='Activity Feed' href='/(tabs)/Dashboard/More/activity'/> 
         </View>
         <View style={{flexDirection:'column',padding:10,gap:20,backgroundColor:'black',
-          paddingHorizontal:'20',elevation:10,marginTop:10,
+          paddingHorizontal:'20',elevation:10,
         }}>
           <Text style={{fontSize:18,fontWeight:'500',shadowColor: '#000',color:'white'}}>
             NepaliYelp for Business
@@ -55,7 +55,7 @@ export default function More() {
           />
         </View>
         <View style={{flexDirection:'column',padding:10,gap:20,backgroundColor:'black',
-          paddingHorizontal:'20',elevation:10,marginTop:10,
+          paddingHorizontal:'20',elevation:10,
         }}>
           <Text style={{fontSize:18,fontWeight:'500',shadowColor: '#000',color:'white'}}>
             Settings and Support
