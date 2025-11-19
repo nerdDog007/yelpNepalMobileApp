@@ -1,12 +1,12 @@
 import { setMap } from '@/redux/slices/Info';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from "expo-router";
 import React, { useState } from 'react';
 import Map from '../../../../../components/Map';
 
 import WorkingHours from '@/components/Hours';
-import { setDescription, setIndex, setShortDescription } from '@/redux/slices/business';
+import { prevIdex, setDescription, setShortDescription } from '@/redux/slices/business';
 import {
   Button,
   Image,
@@ -19,6 +19,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function AddBusiness() {
@@ -28,7 +29,7 @@ export default function AddBusiness() {
   const [images, setImages] = useState<string[]>([]);
   const user = useSelector((state: any) => state.info.user);
   const map = useSelector((state:any)=>state.info.map)
-  const {locationName,locationCoord ,description,shortDescription,index}  = useSelector((state:any)=>state.business)
+  const {locationName,locationCoord ,description,shortDescription,index,hours}  = useSelector((state:any)=>state.business)
   const [sending,setSending] = useState(false)
   const dispatch = useDispatch()
   const pickImage = async () => {
@@ -70,6 +71,7 @@ export default function AddBusiness() {
     formData.append('locationName', locationName);
     formData.append('description', description);
     formData.append('shortDescription', shortDescription);
+    formData.append('hours', JSON.stringify(hours));
     try {
       setSending(true)
       const response = await fetch("http://192.168.1.146:3000/api/business/create", {
@@ -77,8 +79,8 @@ export default function AddBusiness() {
         body: formData,
       });
       const data = await response.json();
-      
       setSending(false)
+      dispatch(prevIdex())
       router.back();
     } catch (err) {
       
@@ -88,12 +90,16 @@ export default function AddBusiness() {
 
   return (
     <>
-    {map === false && index===0 &&
+    {map === false && index===1 &&
     <KeyboardAvoidingView 
     behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
     >
     <ScrollView contentContainerStyle={styles.container}>
+    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',width:'100%',gap:20}}>
+            <MaterialIcons name='arrow-back' size={30} color='black' onPress={()=>dispatch(prevIdex())} />
+            <Text style={{fontSize:20,fontWeight:'500',color:'black'}}>Back</Text>
+        </View>
       <Text style={styles.title}>Add Your Business</Text>
 
       <View style={styles.imagePickerContainer}>
@@ -153,20 +159,14 @@ export default function AddBusiness() {
         />
         <View>
         </View>
-      <Button title="Next" onPress={()=>
-      {
-        dispatch(setIndex())
-      
-      }
-
-      } />
-      {/* {sending===true&&<View>
+      <Button title="Next" onPress={()=>handleSubmit()} />
+      {sending===true&&<View>
         <ActivityIndicator size="large" color="red" />
-      </View>} */}
+      </View>}
     </ScrollView>
     </KeyboardAvoidingView>
     }
-    {index==1 &&<WorkingHours/>}
+    {index==0 &&<WorkingHours/>}
     {map === true  && <Map/>} 
 </>
   );
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    paddingTop:10
   },
   imagePickerContainer: {
     width: '100%',

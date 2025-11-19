@@ -1,6 +1,11 @@
 
-function getHours(cc:string) {
-    let [hours, minutes] = cc.split(":").map(Number);
+function getHours(cc: string | undefined) {
+    // Add validation to handle undefined/null
+    if (!cc) {
+        return "Closed"; // or "N/A" or whatever default you prefer
+    }
+    
+    let [hours, minutes] = cc.split(":").map(Number);    
     
     if (hours === 0 || hours === 24) {
         return `12:${minutes.toString().padStart(2, '0')} AM`;
@@ -13,6 +18,5 @@ function getHours(cc:string) {
         return `${hours}:${minutes.toString().padStart(2, '0')} AM`;
     }
 }
-getHours("10:00");
 
 export default getHours;

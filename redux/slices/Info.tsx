@@ -1,3 +1,4 @@
+import isClosed from "@/utils/isClosed";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const infoSlice = createSlice({
@@ -8,7 +9,8 @@ export const infoSlice = createSlice({
     token:'',
     currentIndex:'Search',
     map:false,
-    businessId:''
+    businessId:'',
+    isClosed:false
   },
   reducers: {
     setUser: (state, action) => {
@@ -25,9 +27,12 @@ export const infoSlice = createSlice({
     },
     setBusinessId: (state, action) => {
       state.businessId = action.payload;
-    }
+    },
+    setIsClosed: (state, action) => {
+      state.isClosed = action.payload;
+    },
   },
 });
 
-export const { setUser,setToken ,setCurrentIndex,setMap,setBusinessId} = infoSlice.actions;
+export const { setUser,setToken ,setCurrentIndex,setMap,setBusinessId,setIsClosed} = infoSlice.actions;
 export default infoSlice.reducer;
