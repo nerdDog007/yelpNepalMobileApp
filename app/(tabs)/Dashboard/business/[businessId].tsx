@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import renderStars from "@/components/ratingStar";
+import Review from "@/components/review";
 import { setBusinessId, setIsClosed } from "@/redux/slices/Info";
 import getHours from "@/utils/hours";
 import closed, { getDay } from "@/utils/isClosed";
@@ -8,7 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { ActivityIndicator } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -32,37 +34,29 @@ function Business() {
         return data.data;
     }
 
+   
+
     const { isLoading, data } = useQuery({
         queryKey: ['business', businessId],
         queryFn: getData,
-    });
-
-    // Fixed rando function
+    });    
     async function rando(businessData: any) {
-        
             const currentDay = getDay();
-            ;
-            
             const todayHours = businessData.hours?.[currentDay] || {};
-            
-            
             setDay(currentDay);
-            // dispatch(setIsClosed(closed(businessData.hours)));
-            dispatch(setIsClosed(closed({thursday:{open:'10:00',close:'12:00'}})));
+            dispatch(setIsClosed(closed(businessData.hours)));
             setHours(todayHours);
             
             const startTime = todayHours?.open ? getHours(todayHours.open) : "Closed";
             const endTime = todayHours?.close ? getHours(todayHours.close) : "Closed";
-            
             setStart(startTime);
             setEnd(endTime);
     }
-
     useEffect(() => {
         if (data) {
             rando(data);
         }
-    }, [data]);
+    }, [data]);    
 
     if (isLoading) {
         return (
@@ -81,7 +75,7 @@ function Business() {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
             <View>
                 <Image 
                     source={{ uri: data.url?.[0] }} 
@@ -104,8 +98,8 @@ function Business() {
                 </View>
                 <MaterialIcons 
                     name="bookmark" 
-                    size={28} 
-                    color="black" 
+                    size={34} 
+                    color="white" 
                     style={{ position: 'absolute', top: 10, right: 20 }} 
                 />
             </View>
@@ -129,24 +123,91 @@ function Business() {
                     {data.description}
                 </Text>
             </View>
-            {user?.user?.user_id !== data.userId && (
-                <View style={{ padding: 10, position: 'absolute', bottom: 20, left: 0, right: 0 }}>
-                    <Button 
-                        Teext={styles.textt} 
-                        view={styles.button}  
-                        icon={<MaterialIcons name="rate-review" size={24} color="white" />} 
-                        text="Add A Review" 
-                        onPress={() => {
-                            router.push(`/(tabs)/Dashboard/business/AddReview`);
-                        }} 
-                    />
+            <View>
+
+           
+            <ScrollView 
+            
+            horizontal={true}>
+                <View style={{padding:10,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:10}}>
+
+                    {user.user.user_id !== data.userId &&
+                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="rate-review" size={24} color="white" />} text="Add A Review" onPress={()=>{
+                        router.push(`/(tabs)/Dashboard/business/AddReview`)
+                    }} />}
+                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="link" size={24} color="white" />} text="Website" onPress={() => {}} />
+                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="bookmark" size={24} color="white" />} text="Save" onPress={() => {}} />
+                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="share" size={24} color="white" />} text="Share" onPress={() => {}} />
+                    { user.user.user_id === data.userId && <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="edit" size={24} color="white" />} text="Edit" onPress={() => {}} />
+                    }
                 </View>
-            )}
-        </View>
+            </ScrollView>
+
+            {/* Maps */}
+            <View>
+            <MapView
+    style={styles.map}
+    initialRegion={{
+        latitude: Number(data?.coordinates?.latitude) || 27.7172, // Fallback to default
+        longitude: Number(data?.coordinates?.longitude) || 85.3240, // Fallback to default
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+}}
+>
+    {data?.coordinates?.latitude && data?.coordinates?.longitude && (
+        <Marker
+            coordinate={{
+                latitude: Number(data.coordinates?.latitude),
+                longitude: Number(data.coordinates?.longitude),
+            }}
+            title={data.businessName}
+            description={data.shortDescription}
+        />
+    )}
+</MapView>
+            </View>
+                    {/* Reviews */}
+            <View style={{alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontSize:20,color:'black',fontWeight:'bold',margin:10}}>
+                    Reviews
+                </Text>
+                <View style={{flexDirection:'column',alignItems:'center',gap:10}}>
+                {
+                    data.reviews.map((review)=>{
+                        return(
+                            <Review key={review.id} dataa={review} />
+                        )
+                    })
+                }
+                </View>
+            </View>
+
+         </View>
+
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    map: {
+        width: Dimensions.get("window").width, 
+        height: 200, 
+        resizeMode: "cover" 
+    },
+    thi:{
+        flex:0,
+        backgroundColor:'red',
+        flexDirection:'row',
+        alignSelf: 'flex-start',
+        padding:10,
+        gap:6,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
+    teext:{
+        color:'white',
+    },
     button: {
         backgroundColor: 'red',
         padding: 15,

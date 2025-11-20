@@ -27,7 +27,6 @@ function Searchh(){
     const onChangeText=(text:string)=>{
         dispatch(setSearchIndex(text))
     }
-    
     return(
         <>
         <View style={{flex:1,backgroundColor:'black'}}>
