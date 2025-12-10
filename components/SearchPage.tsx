@@ -5,6 +5,7 @@ import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import BusinessCard from './business.card';
 import Searchh from './search';
+import { url } from '@/utils/url';
 const getAverageRating = (ratingArray) => {
     if (!ratingArray || ratingArray.length === 0) return 0;
     const sum = ratingArray.reduce((a, b) => a + b, 0);
@@ -14,7 +15,7 @@ function Search(){
     const router = useRouter();
     const { user } = useSelector((state: any) => state.info);
     const fetchData = async () => {
-        const response = await fetch(`http://192.168.1.146:3000/api/business/searchAll`);
+        const response = await fetch(`${url}/api/business/searchAll`);
         const data = await response.json();
         return data;
     };

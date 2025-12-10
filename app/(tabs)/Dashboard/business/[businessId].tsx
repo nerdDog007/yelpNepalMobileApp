@@ -4,6 +4,7 @@ import Review from "@/components/review";
 import { setBusinessId, setIsClosed } from "@/redux/slices/Info";
 import getHours from "@/utils/hours";
 import closed, { getDay } from "@/utils/isClosed";
+import { url } from "@/utils/url";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -24,12 +25,35 @@ function Business() {
     const [start, setStart] = useState('Closed');
     const [end, setEnd] = useState('Closed');
     
+    console.log(user.user.user_id);
+
+    async function handleBookmark() {
+        try {
+          await axios.post(
+            `${url}/api/bookmark/create`,
+            {
+              businessId: businessId,
+              userId: user.user.user_id
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`
+              }
+            }
+          );
+      
+          console.log("Bookmarked Successfully");
+      
+        } catch (error) {
+          console.log("Bookmark Error:", error.response?.data || error.message);
+        }
+      }
     useEffect(() => {
         dispatch(setBusinessId(businessId));
     }, [businessId, dispatch]);
 
     async function getData() {
-        const response = await axios.get(`http://192.168.1.146:3000/api/search/${businessId}`);
+        const response = await axios.get(`${url}/api/search/${businessId}`);
         const data = await response.data;
         return data.data;
     }
@@ -136,20 +160,18 @@ function Business() {
                         router.push(`/(tabs)/Dashboard/business/AddReview`)
                     }} />}
                     <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="link" size={24} color="white" />} text="Website" onPress={() => {}} />
-                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="bookmark" size={24} color="white" />} text="Save" onPress={() => {}} />
+                    <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="bookmark" size={24} color="white" />} text="Save" onPress={handleBookmark} />
                     <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="share" size={24} color="white" />} text="Share" onPress={() => {}} />
                     { user.user.user_id === data.userId && <Button Teext={styles.teext} view={styles.thi} icon={<MaterialIcons name="edit" size={24} color="white" />} text="Edit" onPress={() => {}} />
                     }
                 </View>
             </ScrollView>
-
-            {/* Maps */}
             <View>
             <MapView
     style={styles.map}
     initialRegion={{
-        latitude: Number(data?.coordinates?.latitude) || 27.7172, // Fallback to default
-        longitude: Number(data?.coordinates?.longitude) || 85.3240, // Fallback to default
+        latitude: Number(data?.coordinates?.latitude) || 27.7172, 
+        longitude: Number(data?.coordinates?.longitude) || 85.3240, 
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
 }}
@@ -166,16 +188,15 @@ function Business() {
     )}
 </MapView>
             </View>
-                    {/* Reviews */}
             <View style={{alignItems:'center',justifyContent:'center'}}>
                 <Text style={{fontSize:20,color:'black',fontWeight:'bold',margin:10}}>
                     Reviews
                 </Text>
                 <View style={{flexDirection:'column',alignItems:'center',gap:10}}>
                 {
-                    data.reviews.map((review)=>{
+                    data.reviews.map((review,index)=>{
                         return(
-                            <Review key={review.id} dataa={review} />
+                            <Review key={index} dataa={review} />
                         )
                     })
                 }

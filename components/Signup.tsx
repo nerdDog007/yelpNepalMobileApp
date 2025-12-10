@@ -2,6 +2,7 @@ import { setToken, setUser } from "@/redux/slices/Info";
 import { setHasAccount, setLogPassword } from "@/redux/slices/logSlice";
 import { nextStep, prevStep, setEmail, setFullName, setPassword } from "@/redux/slices/SignUp";
 import { storeUserData } from "@/utils/storage";
+import { url } from "@/utils/url";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -34,7 +35,7 @@ function Welcome()
   const router = useRouter();
 
   async function checkUser(){
-    const res = await fetch("http://192.168.1.146:3000/api/auth/checkEmail", {
+    const res = await fetch(`${url}/api/auth/checkEmail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -196,7 +197,7 @@ function Welcome()
             onPress={async ()=>{
               if (password.length>3) {
                 try {
-                  const res = await fetch("http://192.168.1.146:3000/api/auth/login", {
+                  const res = await fetch(`${url}/api/auth/login`, {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -290,7 +291,7 @@ function Name(){
   }}
   onPress={async () => {
     try {
-      const res = await fetch("http://192.168.1.146:3000/api/auth/signup", {
+      const res = await fetch(`${url}/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

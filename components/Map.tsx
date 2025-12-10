@@ -1,5 +1,6 @@
 import { setLocation, setLocationName } from '@/redux/slices/business';
 import { setMap } from '@/redux/slices/Info';
+import { url } from '@/utils/url';
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
@@ -31,7 +32,7 @@ export default function MapScreen() {
             const coords = e.nativeEvent.coordinate;
             dispatch(setLocation(coords));
             // Send to backend
-            const res = await fetch("http://192.168.1.146:3000/api/location", {
+            const res = await fetch(`${url}/api/location`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

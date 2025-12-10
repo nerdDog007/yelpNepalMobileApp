@@ -10,7 +10,6 @@ export default function Index() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // Fetch function for react-query
   async function FetchFromStorage() {
     const { user, token } = await getUserData();
     if (user && token) {

@@ -1,6 +1,7 @@
 import Back from "@/components/back";
 import { setFormData } from "@/redux/slices/business";
 import { setInputReview, setStars } from "@/redux/slices/reviewSlice";
+import { url } from "@/utils/url";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -57,7 +58,7 @@ function AddReview(){
         formData.append('userId', user.user.user_id);
         try {
             setSending(true)
-          const response = await fetch("http://192.168.1.146:3000/api/review/create", {
+          const response = await fetch(`${url}/api/review/create`, {
             method: "POST",
             body: formData,
           });
@@ -72,7 +73,7 @@ function AddReview(){
         }
       }
     async function getData(){
-        const response = await axios.get(`http://192.168.1.146:3000/api/search/${businessId}`)
+        const response = await axios.get(`${url}/api/search/${businessId}`)
         const data = await response.data;
         return data.data
     }

@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import { url } from '@/utils/url';
 
 export default function AddBusiness() {
   const router = useRouter();
@@ -74,7 +75,7 @@ export default function AddBusiness() {
     formData.append('hours', JSON.stringify(hours));
     try {
       setSending(true)
-      const response = await fetch("http://192.168.1.146:3000/api/business/create", {
+      const response = await fetch(`${url}/api/business/create`, {
         method: "POST",
         body: formData,
       });

@@ -1,10 +1,8 @@
 
 function getHours(cc: string | undefined) {
-    // Add validation to handle undefined/null
     if (!cc) {
-        return "Closed"; // or "N/A" or whatever default you prefer
+        return "Closed"; 
     }
-    
     let [hours, minutes] = cc.split(":").map(Number);    
     
     if (hours === 0 || hours === 24) {

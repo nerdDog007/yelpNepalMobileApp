@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Profile from "@/components/Profile";
 import { setCurrentIndex } from "@/redux/slices/Info";
 import { useEffect } from "react";
 import { Dimensions, View } from "react-native";
@@ -19,9 +20,10 @@ export default function Dashboard() {
     style={{
       flex: 0,
       backgroundColor: "black",
-      paddingBottom: insets.bottom+height*.1,
+      paddingBottom: height*.1,
       height: '100%',
     }}>
+      <Profile/>
     <Navbar />
   </View>
   );

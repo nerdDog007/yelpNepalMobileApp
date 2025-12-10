@@ -1,3 +1,4 @@
+import { url } from "@/utils/url";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,7 +9,7 @@ export default function Review({dataa}) {
     console.log(dataa.stars);
     
    async function getUser(){
-        const response =await axios.get(`http://192.168.1.146:3000/api/user/${dataa.userId}`);
+        const response =await axios.get(`${url}/api/user/${dataa.userId}`);
         const data = await response.data;
         return data;
     }

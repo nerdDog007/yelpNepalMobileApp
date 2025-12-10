@@ -15,7 +15,7 @@ let averageRating = mm / rating.length;
 
   for (let i = 0; i < fullStars; i++) {
     stars.push(
-      <View style={{backgroundColor:'red',padding:2}} key={i}>
+      <View style={{backgroundColor:'red',padding:2}} >
         <FontAwesome  name="star" size={18} color="white" />
       </View>
   );
@@ -32,7 +32,7 @@ let averageRating = mm / rating.length;
   const emptyStars = 5 - stars.length;
   for (let i = 0; i < emptyStars; i++) {
     stars.push(
-      <View style={{backgroundColor:'red',padding:2}} key={i}>
+      <View style={{backgroundColor:'red',padding:2}} >
     <FontAwesome  name="star-o" size={18} color="white" />
       </View>
   
